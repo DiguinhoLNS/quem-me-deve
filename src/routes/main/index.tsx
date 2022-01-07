@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MainRouteParams } from '../../routes/types'
 
 import Home from '../../screens/home'
+import Debtors from '../../screens/debtors'
+import Profile from '../../screens/profile'
 
 const MainRoute: React.FC = () => {
 
@@ -17,6 +19,8 @@ const MainRoute: React.FC = () => {
             //tabBar = {props => <BottomTab {...props} />}
         >
             <Tab.Screen name = "home" component = {Home} />
+            <Tab.Screen name = "debtors" component = {Debtors} />
+            <Tab.Screen name = "profile" component = {Profile} />
         </Tab.Navigator>
 
     )
