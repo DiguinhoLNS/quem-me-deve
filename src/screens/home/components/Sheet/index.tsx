@@ -3,7 +3,9 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 
 import { SheetProps } from './types'
 
-const Sheet: React.FC <SheetProps> = ({ children, sheetRef }) => {
+const Sheet: React.FC <SheetProps> = ({ children, sheetRef, onClose }) => {
+
+    const animationDuration = 350
 
     return(
 
@@ -11,9 +13,9 @@ const Sheet: React.FC <SheetProps> = ({ children, sheetRef }) => {
             ref = {sheetRef}
             closeOnDragDown = {true}
             closeOnPressMask = {true}
-            openDuration = {300}
-            closeDuration = {300}
-            height = {100}
+            openDuration = {animationDuration}
+            closeDuration = {animationDuration}
+            height = {200}
             customStyles = {{
                 wrapper: {
                     backgroundColor: "rgba(0,0,0,0.4)"
@@ -22,10 +24,13 @@ const Sheet: React.FC <SheetProps> = ({ children, sheetRef }) => {
                     backgroundColor: "grey"
                 },
                 container: {
-                    borderTopLeftRadius: 16,
-                    borderTopRightRadius: 16
+                    paddingVertical: 12,
+                    paddingHorizontal: 24,
+                    borderTopLeftRadius: 24,
+                    borderTopRightRadius: 24
                 }
             }}
+            onClose = {() => onClose ? onClose() : null}
         >{children}</RBSheet>
 
     )

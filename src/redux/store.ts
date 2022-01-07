@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import appAuthReducer from './reducers/app/appAuthReducer'
+import chargesReducer from './reducers/charges/chargesReducer'
 
 const store = configureStore({
     reducer: {
-        appAuth: appAuthReducer
+        appAuth: appAuthReducer,
+        charges: chargesReducer
     }
 })
 
