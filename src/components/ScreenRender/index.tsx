@@ -26,7 +26,7 @@ const ScreenRender: React.FC <ScreenRenderProps> = props => {
             <SafeAreaView style = {{flex: 1, backgroundColor: props.wrapperBackgroundColor ?? LayoutStyles.background}}>
                 <KeyboardAwareScrollView
                     style = {{backgroundColor: props.wrapperBackgroundColor ?? LayoutStyles.background}}
-                    contentContainerStyle = {{flexGrow: 1, justifyContent: props.wrapperCenter ? 'center' : 'flex-start'}}
+                    contentContainerStyle = {{flexGrow: 1, justifyContent: props.wrapperCenter ? 'center' : 'flex-start', padding: 0}}
                     nestedScrollEnabled
                     keyboardShouldPersistTaps = "handled"
                 >

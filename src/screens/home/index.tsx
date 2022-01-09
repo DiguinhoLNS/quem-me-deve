@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import { View } from 'react-native'
 import { ActivityIndicator, Button, FAB, Text, TextInput } from 'react-native-paper'
 import { FakeCurrencyInput, formatNumber, FormatNumberOptions } from 'react-native-currency-input'
 import RBSheet from "react-native-raw-bottom-sheet"
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useDispatch } from 'react-redux'
 
 import { useAppSelector } from '../../redux/hooks'
@@ -12,6 +10,8 @@ import { createNewCharge, resetNewCharge } from '../../redux/reducers/charges/ch
 import ScreenRender from '../../components/ScreenRender'
 import Sheet from './components/Sheet'
 import createCharge from '../../scripts/createCharge'
+import removeCharge from '../../scripts/removeCharge'
+import ChargeBox from '../../components/ChargeBox'
 
 const Home: React.FC = () => {
 
@@ -33,14 +33,8 @@ const Home: React.FC = () => {
         <>
             <ScreenRender statusBarStyle = "dark-content">
                 {loadingCharges && <ActivityIndicator size = {48} />}
-                {charges && charges.map((data, index) => (
-                    <View key = {index} style = {{display: 'flex', flexDirection: 'row'}}>
-                        <Text>{data.formattedValue}</Text>
-                        <Text>{data.id}</Text>
-                        <Text>{data.date.day} - {data.date.time}</Text>
-                        <MaterialCommunityIcons name = "delete" size = {16} color = "red" onPress = {() => console.log()} />
-                    </View>
-                ))}
+                {!charges || (charges && charges.length < 1) && <Text>Você não possui devedores :)</Text>}
+                {charges && charges.map((item, index) => <ChargeBox key = {index} {...item} />)}
             </ScreenRender>
             <FAB
                 icon = "plus"
@@ -64,6 +58,7 @@ const Home: React.FC = () => {
                 />
                 <Button 
                     mode = "contained" 
+                    disabled = {!newCharge.value}
                     onPress = {() => {
                         createCharge(dispatch)
                         sheetRef.current?.close()

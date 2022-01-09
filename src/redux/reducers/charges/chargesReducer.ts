@@ -46,9 +46,13 @@ const chargeSlice = createSlice({
             state.newCharge.date.day = action.payload.day
             state.newCharge.date.time = action.payload.time
             state.charges = [...state.charges, state.newCharge]
+        },
+
+        deleteCharge: (state, action: PayloadAction<string>) => {
+            state.charges = state.charges.filter(charge => charge.id !== action.payload)
         }
     }
 })
 
-export const { setChargesData, setChargesLoading, createNewCharge, setNewCharges, resetNewCharge } = chargeSlice.actions
+export const { setChargesData, setChargesLoading, createNewCharge, setNewCharges, resetNewCharge, deleteCharge } = chargeSlice.actions
 export default chargeSlice.reducer
