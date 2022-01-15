@@ -6,5 +6,6 @@ export type ScreenRenderProps = {
 
     wrapperType?: 'default' | 'form' | 'image',
     wrapperCenter?: boolean,
+    wrapperMarginTop?: boolean,
     wrapperBackgroundColor?: string,
 }

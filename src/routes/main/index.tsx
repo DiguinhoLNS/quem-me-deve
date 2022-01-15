@@ -15,7 +15,7 @@ const MainRoute: React.FC = () => {
 
         <Tab.Navigator
             initialRouteName = "home"
-            //screenOptions = {{headerShown: false}}
+            screenOptions = {{headerShown: false}}
             //tabBar = {props => <BottomTab {...props} />}
         >
             <Tab.Screen name = "home" component = {Home} />

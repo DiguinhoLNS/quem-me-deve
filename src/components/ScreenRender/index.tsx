@@ -26,11 +26,11 @@ const ScreenRender: React.FC <ScreenRenderProps> = props => {
             <SafeAreaView style = {{flex: 1, backgroundColor: props.wrapperBackgroundColor ?? LayoutStyles.background}}>
                 <KeyboardAwareScrollView
                     style = {{backgroundColor: props.wrapperBackgroundColor ?? LayoutStyles.background}}
-                    contentContainerStyle = {{flexGrow: 1, justifyContent: props.wrapperCenter ? 'center' : 'flex-start', padding: 0}}
+                    contentContainerStyle = {{flexGrow: 1, justifyContent: props.wrapperCenter ? 'center' : 'flex-start'}}
                     nestedScrollEnabled
                     keyboardShouldPersistTaps = "handled"
                 >
-                    <Wrapper type = {props.wrapperType ?? 'default'} translucent = {props.statusBarTranslucent}>{props.children}</Wrapper>
+                    <Wrapper type = {props.wrapperType ?? 'default'} marginTop = {props.wrapperMarginTop ?? true} translucent = {props.statusBarTranslucent}>{props.children}</Wrapper>
                 </KeyboardAwareScrollView>
             </SafeAreaView>
         </>
