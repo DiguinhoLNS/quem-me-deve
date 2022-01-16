@@ -63,14 +63,14 @@ const Home: React.FC = () => {
                         ))}
                     </>
                 )}
-                <Section.Row>
+                <Section.Row marginTop = {24}>
                     {Object.keys(themes).map((data, index) => 
                         <Button 
                             key = {index} 
-                            mode = "contained" 
+                            color = "#000000"
                             style = {{backgroundColor: (themes as any)[data].primary}} 
                             onPress = {() => setTheme(dispatch, (themes as any)[data])}
-                        >{data}</Button>
+                        >{(themes as any)[data].name}</Button>
                     )}
                 </Section.Row>
             </ScreenRender>
@@ -104,6 +104,7 @@ const Home: React.FC = () => {
                 />
                 <Button 
                     mode = "contained" 
+                    style = {{backgroundColor: theme.primary}}
                     disabled = {!newCharge.value}
                     onPress = {() => {
                         createCharge(dispatch)

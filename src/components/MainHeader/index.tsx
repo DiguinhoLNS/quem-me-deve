@@ -16,7 +16,7 @@ const MainHeader: React.FC = props => {
             <S.HeaderContent>
                 <S.HeaderProfileContainer>
                     <TouchableOpacity>
-                        <Avatar.Text label = "P" size = {40} />
+                        <Avatar.Text label = "P" size = {40} style = {{backgroundColor: 'rgba(0,0,0,0.5)'}} />
                     </TouchableOpacity>
                     <Text style = {{marginLeft: 8, fontSize: 18}}>Placeholder</Text>
                 </S.HeaderProfileContainer>
