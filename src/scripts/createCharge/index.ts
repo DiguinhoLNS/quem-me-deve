@@ -2,10 +2,15 @@ import uuid from 'react-native-uuid'
 
 import { resetNewCharge, setNewCharges } from "../../redux/reducers/charges/chargesReducer"
 
+import getMouthName from '../../utils/getMouthName'
+
 export default function createCharge(dispatch: Function){
 
+    const date = new Date()
+    const createdDate = `${date.getDate()} de ${getMouthName(date.getMonth())} de ${date.getFullYear()}`
+
     try {
-        dispatch(setNewCharges({id: uuid.v4().toString(), day: new Date().toLocaleDateString(), time: new Date().toLocaleTimeString()}))
+        dispatch(setNewCharges({id: uuid.v4().toString(), day: createdDate, time: new Date().toLocaleTimeString()}))
 
         dispatch(resetNewCharge())
     } catch (error) {

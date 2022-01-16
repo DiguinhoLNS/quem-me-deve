@@ -9,9 +9,9 @@ import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react
 import { Charge } from '../../types/charge'
 
 import * as S from './styles'
+import { Elevation } from '../../styles/base'
 
 import removeCharge from '../../scripts/removeCharge'
-import { Elevation } from '../../styles/base'
 
 const ChargeBox: React.FC <Charge> = props => {
 
@@ -38,7 +38,7 @@ const ChargeBox: React.FC <Charge> = props => {
                 <CollapseHeader>
                     <S.ChargeBoxHeaderContainer>
                         <Text style = {{fontSize: 32}}>{props.formattedValue}</Text>
-                        <Text style = {{fontSize: 12}}>{props.name ?? 'sem nome'} - {props.date.day} as {props.date.time?.substring(0,5)}</Text>
+                        <Text style = {{fontSize: 12}}>{props.name ? `${props.name} - ` : ''}{props.date.day} as {props.date.time?.substring(0,5)}</Text>
                     </S.ChargeBoxHeaderContainer>
                 </CollapseHeader>
                 <CollapseBody>

@@ -4,21 +4,24 @@ import { FakeCurrencyInput, formatNumber, FormatNumberOptions } from 'react-nati
 import RBSheet from "react-native-raw-bottom-sheet"
 import { useDispatch } from 'react-redux'
 
+import themes from '../../styles/themes'
+
 import { useAppSelector } from '../../redux/hooks'
 import { createNewCharge, resetNewCharge } from '../../redux/reducers/charges/chargesReducer'
 
 import ScreenRender from '../../components/ScreenRender'
 import Sheet from './components/Sheet'
 import createCharge from '../../scripts/createCharge'
-import removeCharge from '../../scripts/removeCharge'
 import ChargeBox from '../../components/ChargeBox'
 import Section from '../../components/Section'
 import MainHeader from '../../components/MainHeader'
+import setTheme from '../../scripts/app/theme/setTheme'
 
 const Home: React.FC = () => {
 
     const dispatch = useDispatch()
     const { charges, newCharge, loadingCharges } = useAppSelector(state => state.charges)
+    const { theme } = useAppSelector(state => state.appTheme)
 
     const sheetRef = useRef<RBSheet>(null)
 
@@ -42,7 +45,7 @@ const Home: React.FC = () => {
                     {SHOW_NO_DATA && <Text style = {{fontSize: 40}}>R$ 0,00</Text>}
                     {SHOW_DATA && <Text style = {{fontSize: 40}}>{formatNumber(charges.map(item => item.value).reduce((acc, value) => acc + value, 0), formatNumberProps)}</Text>}
                 </MainHeader>
-                {SHOW_LOADING && <ActivityIndicator size = {48} />}
+                {SHOW_LOADING && <ActivityIndicator size = {48} color = {theme.primary} />}
                 {SHOW_NO_DATA && 
                     <Section.Row center>
                         <Text>Você não possui devedores :)</Text>
@@ -60,6 +63,16 @@ const Home: React.FC = () => {
                         ))}
                     </>
                 )}
+                <Section.Row>
+                    {Object.keys(themes).map((data, index) => 
+                        <Button 
+                            key = {index} 
+                            mode = "contained" 
+                            style = {{backgroundColor: (themes as any)[data].primary}} 
+                            onPress = {() => setTheme(dispatch, (themes as any)[data])}
+                        >{data}</Button>
+                    )}
+                </Section.Row>
             </ScreenRender>
             <FAB
                 icon = "plus"
@@ -67,6 +80,7 @@ const Home: React.FC = () => {
                     position: 'absolute',
                     right: 24,
                     bottom: 24,
+                    backgroundColor: theme.primary
                 }}
                 onPress = {() => sheetRef.current?.open()}
             />

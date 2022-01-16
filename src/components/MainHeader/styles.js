@@ -11,7 +11,15 @@ export const Header = styled.View`
     width: 100%;
     height: 300px;
     margin-bottom: 24px;
-    background-color: ${props => props.color ?? '#caffbf'};
+    background-color: ${props => props.color};
+`
+
+export const HeaderProfileContainer = styled.View`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 16px;
 `
 
 export const HeaderContent = styled.View`

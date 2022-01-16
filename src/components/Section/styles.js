@@ -16,6 +16,7 @@ export const SectionColumn = styled.View`
 
 export const SectionRow = styled.View`
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: ${props => props.center ? 'center' : 'flex-start'};
     width: 100%;
