@@ -1,23 +1,23 @@
 const themes = {
-    purple: {
-        name: 'Roxo',
-        primary: '#7C83FD'
+    green: {
+        name: 'Verde',
+        primary: '#50AA77'
+    },
+    red: {
+        name: 'Vermelho',
+        primary: '#CF4A4C'
+    },
+    blue: {
+        name: 'Azul',
+        primary: '#83BCE4'
     },
     yellow: {
         name: 'Amarelo',
-        primary: '#eef36a'
+        primary: '#ECC938'
     },
-    green: {
-        name: 'Verde',
-        primary: '#6fd08c'
-    },
-    salmon: {
-        name: 'Salmão',
-        primary: '#e88873'
-    },
-    pink: {
-        name: 'Rosa',
-        primary: '#e7bbe3'
+    purple: {
+        name: 'Roxo',
+        primary: '#8169BE'
     },
 }
 

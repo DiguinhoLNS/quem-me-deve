@@ -5,7 +5,7 @@ import toPixel from '../../utils/toPixel'
 
 export const Wrapper = styled.View`
     position: relative;
-    padding-bottom: 24px;
+    padding-bottom: 56px;
     margin-top: ${props => ['default', 'form'].includes(props.type) && props.marginTop ? toPixel(StatusBar.currentHeight) : '0'};
     background-color: transparent;
 `

@@ -15,7 +15,7 @@ export const ChargeBoxBodyContainer = styled.View`
     width: 100%;
     padding: 8px;
     border-radius: 12px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.07);
 `
 
 export const ChargeBoxOptionGroup = styled.View`

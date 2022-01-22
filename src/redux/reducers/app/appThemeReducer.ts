@@ -9,7 +9,7 @@ interface State {
 }
 
 const initialState: State = {
-    theme: themes.purple
+    theme: themes.blue
 }
 
 const appThemeSlice = createSlice({

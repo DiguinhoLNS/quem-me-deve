@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { View } from 'react-native'
 import { ActivityIndicator, Button, FAB, Text, TextInput } from 'react-native-paper'
 import { FakeCurrencyInput, formatNumber, FormatNumberOptions } from 'react-native-currency-input'
 import RBSheet from "react-native-raw-bottom-sheet"
@@ -16,6 +17,7 @@ import ChargeBox from '../../components/ChargeBox'
 import Section from '../../components/Section'
 import MainHeader from '../../components/MainHeader'
 import setTheme from '../../scripts/app/theme/setTheme'
+import ThemePicker from '../../components/Theme/Picker'
 
 const Home: React.FC = () => {
 
@@ -64,14 +66,16 @@ const Home: React.FC = () => {
                     </>
                 )}
                 <Section.Row marginTop = {24}>
-                    {Object.keys(themes).map((data, index) => 
-                        <Button 
-                            key = {index} 
-                            color = "#000000"
-                            style = {{backgroundColor: (themes as any)[data].primary}} 
-                            onPress = {() => setTheme(dispatch, (themes as any)[data])}
-                        >{(themes as any)[data].name}</Button>
-                    )}
+                    <View style = {{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                        {Object.keys(themes).map((data, index) => 
+                            <ThemePicker
+                                key = {index}
+                                color = {(themes as any)[data].primary}
+                                active = {(themes as any)[data].primary === theme.primary}
+                                onPress = {() => setTheme(dispatch, (themes as any)[data])}
+                            />
+                        )}
+                    </View>
                 </Section.Row>
             </ScreenRender>
             <FAB
