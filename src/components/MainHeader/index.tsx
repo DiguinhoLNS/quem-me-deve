@@ -2,18 +2,20 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { Avatar, Text } from 'react-native-paper'
 
-import * as S from './styles'
+import { MainHeaderProps } from './types'
 
-import { useAppSelector } from '../../redux/hooks'
+import * as S from './styles'
 import { Elevation } from '../../styles/base'
 
-const MainHeader: React.FC = props => {
+import { useAppSelector } from '../../redux/hooks'
+
+const MainHeader: React.FC <MainHeaderProps> = ({ children, height }) => {
 
     const { theme } = useAppSelector(state => state.appTheme)
 
     return(
 
-        <S.Header style = {Elevation.elevation5} color = {theme.primary}>
+        <S.Header style = {Elevation.elevation5} height = {height} color = {theme.primary}>
             <S.HeaderContainer>
                 <S.HeaderProfileContainer>
                     <TouchableOpacity>
@@ -21,7 +23,7 @@ const MainHeader: React.FC = props => {
                     </TouchableOpacity>
                     <Text style = {{marginLeft: 8, fontSize: 14}}>Usuário</Text>
                 </S.HeaderProfileContainer>
-                <S.HeaderContent>{props.children}</S.HeaderContent>
+                <S.HeaderContent>{children}</S.HeaderContent>
             </S.HeaderContainer>
         </S.Header>
 

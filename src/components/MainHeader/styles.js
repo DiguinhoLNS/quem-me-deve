@@ -9,7 +9,7 @@ export const Header = styled.View`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 300px;
+    height: ${props => props.height ? toPixel(props.height) : 'auto'};
     margin-bottom: 24px;
     background-color: ${props => props.color};
 `

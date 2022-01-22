@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { FlatList, View } from 'react-native'
 import { ActivityIndicator, Button, Text } from 'react-native-paper'
-import { FakeCurrencyInput, formatNumber, FormatNumberOptions } from 'react-native-currency-input'
+import { FakeCurrencyInput, formatNumber } from 'react-native-currency-input'
 import RBSheet from "react-native-raw-bottom-sheet"
 import { useDispatch } from 'react-redux'
 
@@ -21,12 +21,14 @@ import createCharge from '../../scripts/charge/createCharge'
 import OptionBox from './components/OptionBox'
 import Sheet from '../../components/Sheet'
 import NoDebtors from '../../components/NoDebtors'
+import formatNumberProps from '../../constants/formatNumberProps'
+import fixedCharges from '../../scripts/charge/fixedCharges'
 
 const Home: React.FC = () => {
 
     const dispatch = useDispatch()
-    const { charges, newCharge, loadingCharges } = useAppSelector(state => state.charges)
     const { theme } = useAppSelector(state => state.appTheme)
+    const { charges, newCharge, loadingCharges } = useAppSelector(state => state.charges)
 
     const chargeSheetRef = useRef<RBSheet>(null)
     const themeSheetRef = useRef<RBSheet>(null)
@@ -36,14 +38,6 @@ const Home: React.FC = () => {
         {label: 'Alterar tema', icon: 'palette', onPress: () => themeSheetRef.current?.open()},
         {label: 'Compartilhar', icon: 'share-variant', onPress: () => console.log('Compartilhar')},
     ]
-
-    const formatNumberProps: FormatNumberOptions = {
-        separator: ',',
-        prefix: 'R$ ',
-        precision: 2,
-        delimiter: '.',
-        signPosition: 'beforePrefix'
-    }
 
     const SHOW_LOADING = loadingCharges
     const SHOW_DATA = !loadingCharges && charges && charges.length > 0
@@ -62,71 +56,91 @@ const Home: React.FC = () => {
                         <ActivityIndicator size = {48} color = {theme.primary} />
                     </Section.Row>
                 }
-                <Section.Column>
-                    <Text>Opções</Text>
-                </Section.Column>
-                <FlatList
-                    data = {homeOptions}
-                    contentContainerStyle = {{paddingHorizontal: LayoutStyles.marginHorizontal, paddingVertical: 12}}
-                    ItemSeparatorComponent = {() => <View style = {{width: 2, borderRadius: 2, marginHorizontal: 16, backgroundColor: theme.primary}}/>}                        
-                    horizontal = {true}
-                    showsHorizontalScrollIndicator = {false}
-                    keyExtractor = {(item, index) => index.toString()}
-                    renderItem = {({item}) => <OptionBox {...item} color = {theme.primary} />}
-                />
-                <Section.Column marginTop = {12} marginBottom = {8}>
-                    <Text>Cobranças</Text>
-                </Section.Column>
-                {SHOW_NO_DATA && <NoDebtors />}
-                {SHOW_DATA && charges.filter(data => !data.paid).map((item, index) => (
-                    <Section.Column key = {index} marginBottom = {charges.length === index+1 ? 0 : 10}>
-                        <ChargeBox key = {index} {...item} />
+                <>
+                    <Section.Column>
+                        <Text>Opções</Text>
                     </Section.Column>
-                ))}
-            </ScreenRender>
-
-            <Sheet sheetRef = {chargeSheetRef} height = {200} onClose = {() => dispatch(resetNewCharge())}>
-                <FakeCurrencyInput
-                    value = {newCharge.value}
-                    minValue = {0}
-                    style = {{fontSize: 50}}
-                    prefix = "R$"
-                    delimiter = ","
-                    separator = "."
-                    precision = {2}
-                    onChangeValue = {value => 
-                        dispatch(createNewCharge({
-                            id: '', 
-                            value: value ?? 0, 
-                            formattedValue: formatNumber(value ?? 0, formatNumberProps), 
-                            paid: false,
-                            date: {day: undefined, time: undefined}
-                        }))
-                    }
-                />
-                <Button 
-                    mode = "contained" 
-                    style = {{backgroundColor: theme.primary}}
-                    disabled = {!newCharge.value}
-                    onPress = {() => {
-                        createCharge(dispatch)
-                        chargeSheetRef.current?.close()
-                    }}
-                >{`${newCharge.name ? `${newCharge.name} te deve` : 'Cobrar'} ${newCharge.formattedValue}`}</Button>
-            </Sheet>
-
-            <Sheet sheetRef = {themeSheetRef} height = {120}>
-                <View style = {{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginTop: 12}}>
-                    {Object.keys(themes).map((data, index) => 
-                        <ThemePicker
-                            key = {index}
-                            color = {(themes as any)[data].primary}
-                            active = {(themes as any)[data].primary === theme.primary}
-                            onPress = {() => setTheme(dispatch, (themes as any)[data])}
-                        />
+                    <FlatList
+                        data = {homeOptions}
+                        contentContainerStyle = {{paddingHorizontal: LayoutStyles.marginHorizontal, paddingVertical: 12}}
+                        ItemSeparatorComponent = {() => <View style = {{width: 2, borderRadius: 2, marginHorizontal: 16, backgroundColor: theme.primary}}/>}                        
+                        horizontal = {true}
+                        showsHorizontalScrollIndicator = {false}
+                        keyExtractor = {(item, index) => index.toString()}
+                        renderItem = {({item}) => <OptionBox {...item} color = {theme.primary} />}
+                    />
+                </>
+                <>
+                    {(SHOW_DATA && fixedCharges(charges).length > 0) && (
+                        <>
+                            <Section.Column marginTop = {12} marginBottom = {8}>
+                                <Text>{`Fixados (${fixedCharges(charges).length})`}</Text>
+                            </Section.Column>
+                            {charges.filter(data => !data.paid && data.fix).map((item, index) => (
+                                <Section.Column key = {index} marginBottom = {charges.filter(data => !data.paid).length === index+1 ? 0 : 12}>
+                                    <ChargeBox key = {index} {...item} />
+                                </Section.Column>
+                            ))}
+                        </>
                     )}
-                </View>
-            </Sheet>
+                </>
+                <>
+                    <Section.Column marginTop = {12} marginBottom = {8}>
+                        <Text>Cobranças {SHOW_DATA && `(${charges.filter(data => !data.paid && !data.fix).length})`}</Text>
+                    </Section.Column>
+                    {SHOW_NO_DATA && <NoDebtors />}
+                    {SHOW_DATA && charges.filter(data => !data.paid && !data.fix).map((item, index) => (
+                        <Section.Column key = {index} marginBottom = {charges.filter(data => !data.paid).length === index+1 ? 0 : 12}>
+                            <ChargeBox key = {index} {...item} />
+                        </Section.Column>
+                    ))}
+                </>
+            </ScreenRender>
+            <>
+                <Sheet sheetRef = {chargeSheetRef} height = {200} onClose = {() => dispatch(resetNewCharge())}>
+                    <FakeCurrencyInput
+                        value = {newCharge.value}
+                        minValue = {0}
+                        style = {{fontSize: 50}}
+                        prefix = "R$"
+                        delimiter = ","
+                        separator = "."
+                        precision = {2}
+                        onChangeValue = {value => 
+                            dispatch(createNewCharge({
+                                id: '', 
+                                value: value ?? 0, 
+                                formattedValue: formatNumber(value ?? 0, formatNumberProps), 
+                                paid: false,
+                                fix: false,
+                                date: {day: undefined, time: undefined}
+                            }))
+                        }
+                    />
+                    <Button 
+                        mode = "contained" 
+                        style = {{backgroundColor: theme.primary}}
+                        disabled = {!newCharge.value}
+                        onPress = {() => {
+                            createCharge(dispatch)
+                            chargeSheetRef.current?.close()
+                        }}
+                    >{`${newCharge.name ? `${newCharge.name} te deve` : 'Cobrar'} ${newCharge.formattedValue}`}</Button>
+                </Sheet>
+
+                <Sheet sheetRef = {themeSheetRef} height = {120}>
+                    <View style = {{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginTop: 12}}>
+                        {Object.keys(themes).map((data, index) => 
+                            <ThemePicker
+                                key = {index}
+                                color = {(themes as any)[data].primary}
+                                active = {(themes as any)[data].primary === theme.primary}
+                                onPress = {() => setTheme(dispatch, (themes as any)[data])}
+                            />
+                        )}
+                    </View>
+                </Sheet>
+            </>
         </>
 
     )

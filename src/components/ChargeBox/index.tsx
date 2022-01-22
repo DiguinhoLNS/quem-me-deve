@@ -13,6 +13,7 @@ import { Elevation } from '../../styles/base'
 
 import removeCharge from '../../scripts/charge/removeCharge'
 import checkCharge from '../../scripts/charge/checkCharge'
+import toggleFixCharge from '../../scripts/charge/toggleFixCharge'
 
 const ChargeBox: React.FC <Charge> = props => {
 
@@ -40,15 +41,15 @@ const ChargeBox: React.FC <Charge> = props => {
             <Collapse isExpanded = {open} disabled = {true} handleLongPress = {handleLongPress}>
                 <CollapseHeader>
                     <S.ChargeBoxHeaderContainer onPress = {() => open ? setOpen(false) : console.log('click')} onLongPress = {() => handleLongPress()}>
-                        <Text style = {{fontSize: 32}}>{props.formattedValue}</Text>
+                        <Text style = {{fontSize: 28}}>{props.formattedValue}</Text>
                         <Text style = {{fontSize: 12}}>{props.name ? `${props.name} - ` : ''}{props.date.day} as {props.date.time?.substring(0,5)}</Text>
                     </S.ChargeBoxHeaderContainer>
                 </CollapseHeader>
                 <CollapseBody>
                     <S.ChargeBoxBodyContainer>
                         <S.ChargeBoxOptionGroup>
-                            <TouchableOpacity onPress = {() => {}}>
-                                <MaterialCommunityIcons name = "pencil" size = {24} />
+                            <TouchableOpacity onPress = {() => toggleFixCharge(dispatch, props.id)}>
+                                <MaterialCommunityIcons name = {props.fix ? 'pin-off' : 'pin'} size = {24} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress = {() => shareCharge()}>
                                 <MaterialCommunityIcons name = "share-variant" size = {24} />
