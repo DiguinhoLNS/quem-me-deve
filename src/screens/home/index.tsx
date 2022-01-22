@@ -76,9 +76,9 @@ const Home: React.FC = () => {
                             <Section.Column marginTop = {12} marginBottom = {8}>
                                 <Text>{`Fixados (${fixedCharges(charges).length})`}</Text>
                             </Section.Column>
-                            {charges.filter(data => !data.paid && data.fix).map((item, index) => (
-                                <Section.Column key = {index} marginBottom = {charges.filter(data => !data.paid).length === index+1 ? 0 : 12}>
-                                    <ChargeBox key = {index} {...item} />
+                            {charges.filter(data => data.fix).map((item, index) => (
+                                <Section.Column key = {index} marginBottom = {charges.length === index+1 ? 0 : 12}>
+                                    <ChargeBox key = {index} data = {item} showIcons />
                                 </Section.Column>
                             ))}
                         </>
@@ -91,7 +91,7 @@ const Home: React.FC = () => {
                     {SHOW_NO_DATA && <NoDebtors />}
                     {SHOW_DATA && charges.filter(data => !data.paid && !data.fix).map((item, index) => (
                         <Section.Column key = {index} marginBottom = {charges.filter(data => !data.paid).length === index+1 ? 0 : 12}>
-                            <ChargeBox key = {index} {...item} />
+                            <ChargeBox key = {index} data = {item} />
                         </Section.Column>
                     ))}
                 </>

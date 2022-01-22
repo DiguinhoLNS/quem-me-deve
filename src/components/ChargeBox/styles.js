@@ -7,8 +7,22 @@ export const ChargeBox = styled.View`
 `
 
 export const ChargeBoxHeaderContainer = styled.TouchableOpacity`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
     width: 100%;
     padding: 16px;
+`
+
+export const ChargeBoxHeaderTextContainer = styled.View`
+    display: flex;
+    flex-direction: column;
+`
+
+export const ChargeBoxHeaderIconContainer = styled.View`
+    display: flex;
+    flex-direction: row;
 `
 
 export const ChargeBoxBodyContainer = styled.View`

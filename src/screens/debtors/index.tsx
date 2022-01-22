@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from 'react'
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { formatNumber } from 'react-native-currency-input'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useAppSelector } from '../../redux/hooks'
 
@@ -36,7 +35,7 @@ const Debtors: React.FC = () => {
                                     <Text style = {{fontSize: 22}}>{largestCharge(charges.filter(data => !data.paid)).formattedValue}</Text>
                                 </View>
                                 <View>
-                                    <Text>Pagas</Text>
+                                    <Text>Pagos</Text>
                                     <Text style = {{fontSize: 22}}>{formatNumber(charges.filter(data => data.paid).map(item => item.value).reduce((acc, value) => acc + value, 0), formatNumberProps)}</Text>
                                 </View>
                             </View>
@@ -50,7 +49,7 @@ const Debtors: React.FC = () => {
                         </Section.Column>
                         {charges.filter(filtered => filtered.date.day === dates && !filtered.paid).map((item, itemIndex) => (
                             <Section.Column key = {itemIndex} marginBottom = {charges.filter(filtered => filtered.date.day === dates && !filtered.paid).length === itemIndex+1 ? 24 : 12}>
-                                <ChargeBox {...item} />
+                                <ChargeBox data = {item} />
                             </Section.Column>
                         ))}
                     </Fragment>
