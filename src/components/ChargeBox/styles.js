@@ -6,7 +6,7 @@ export const ChargeBox = styled.View`
     background-color: #FFFFFF;
 `
 
-export const ChargeBoxHeaderContainer = styled.View`
+export const ChargeBoxHeaderContainer = styled.TouchableOpacity`
     width: 100%;
     padding: 16px;
 `

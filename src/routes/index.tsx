@@ -6,8 +6,8 @@ import { useAppSelector } from '../redux/hooks'
 import { setAppLoading } from '../redux/reducers/app/appAuthReducer'
 
 import MainRoute from './main'
-import getCharges from '../scripts/getCharges'
-import setCharges from '../scripts/setCharges'
+import getCharges from '../scripts/charge/getCharges'
+import setCharges from '../scripts/charge/setCharges'
 import getTheme from '../scripts/app/theme/getTheme'
 import ScreenRender from '../components/ScreenRender'
 

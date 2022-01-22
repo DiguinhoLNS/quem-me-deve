@@ -3,7 +3,7 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 
 import { SheetProps } from './types'
 
-const Sheet: React.FC <SheetProps> = ({ children, sheetRef, onClose }) => {
+const Sheet: React.FC <SheetProps> = ({ children, sheetRef, height, onClose }) => {
 
     const animationDuration = 350
 
@@ -15,7 +15,7 @@ const Sheet: React.FC <SheetProps> = ({ children, sheetRef, onClose }) => {
             closeOnPressMask = {true}
             openDuration = {animationDuration}
             closeDuration = {animationDuration}
-            height = {200}
+            height = {height}
             customStyles = {{
                 wrapper: {
                     backgroundColor: "rgba(0,0,0,0.4)"

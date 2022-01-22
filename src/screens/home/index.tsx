@@ -1,23 +1,26 @@
 import React, { useEffect, useRef } from 'react'
-import { View } from 'react-native'
-import { ActivityIndicator, Button, FAB, Text, TextInput } from 'react-native-paper'
+import { FlatList, View } from 'react-native'
+import { ActivityIndicator, Button, Text } from 'react-native-paper'
 import { FakeCurrencyInput, formatNumber, FormatNumberOptions } from 'react-native-currency-input'
 import RBSheet from "react-native-raw-bottom-sheet"
 import { useDispatch } from 'react-redux'
 
 import themes from '../../styles/themes'
+import { LayoutStyles } from '../../styles/layout'
 
 import { useAppSelector } from '../../redux/hooks'
 import { createNewCharge, resetNewCharge } from '../../redux/reducers/charges/chargesReducer'
 
 import ScreenRender from '../../components/ScreenRender'
-import Sheet from './components/Sheet'
-import createCharge from '../../scripts/createCharge'
 import ChargeBox from '../../components/ChargeBox'
 import Section from '../../components/Section'
 import MainHeader from '../../components/MainHeader'
-import setTheme from '../../scripts/app/theme/setTheme'
 import ThemePicker from '../../components/Theme/Picker'
+import setTheme from '../../scripts/app/theme/setTheme'
+import createCharge from '../../scripts/charge/createCharge'
+import OptionBox from './components/OptionBox'
+import Sheet from '../../components/Sheet'
+import NoDebtors from '../../components/NoDebtors'
 
 const Home: React.FC = () => {
 
@@ -25,7 +28,14 @@ const Home: React.FC = () => {
     const { charges, newCharge, loadingCharges } = useAppSelector(state => state.charges)
     const { theme } = useAppSelector(state => state.appTheme)
 
-    const sheetRef = useRef<RBSheet>(null)
+    const chargeSheetRef = useRef<RBSheet>(null)
+    const themeSheetRef = useRef<RBSheet>(null)
+
+    const homeOptions = [
+        {label: 'Nova cobrança', icon: 'plus', onPress: () => chargeSheetRef.current?.open()},
+        {label: 'Alterar tema', icon: 'palette', onPress: () => themeSheetRef.current?.open()},
+        {label: 'Compartilhar', icon: 'share-variant', onPress: () => console.log('Compartilhar')},
+    ]
 
     const formatNumberProps: FormatNumberOptions = {
         separator: ',',
@@ -45,50 +55,37 @@ const Home: React.FC = () => {
             <ScreenRender statusBarStyle = "dark-content" wrapperMarginTop = {false}>
                 <MainHeader>
                     {SHOW_NO_DATA && <Text style = {{fontSize: 40}}>R$ 0,00</Text>}
-                    {SHOW_DATA && <Text style = {{fontSize: 40}}>{formatNumber(charges.map(item => item.value).reduce((acc, value) => acc + value, 0), formatNumberProps)}</Text>}
+                    {SHOW_DATA && <Text style = {{fontSize: 40}}>{formatNumber(charges.filter(data => !data.paid).map(item => item.value).reduce((acc, value) => acc + value, 0), formatNumberProps)}</Text>}
                 </MainHeader>
-                {SHOW_LOADING && <ActivityIndicator size = {48} color = {theme.primary} />}
-                {SHOW_NO_DATA && 
+                {SHOW_LOADING && 
                     <Section.Row center>
-                        <Text>Você não possui devedores :)</Text>
+                        <ActivityIndicator size = {48} color = {theme.primary} />
                     </Section.Row>
                 }
-                {SHOW_DATA && (
-                    <>
-                        <Section.Column marginBottom = {8}>
-                            <Text>Cobranças</Text>
-                        </Section.Column>
-                        {charges.map((item, index) => (
-                            <Section.Column key = {index} marginBottom = {charges.length === index+1 ? 0 : 10}>
-                                <ChargeBox key = {index} {...item} />
-                            </Section.Column>
-                        ))}
-                    </>
-                )}
-                <Section.Row marginTop = {24}>
-                    <View style = {{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                        {Object.keys(themes).map((data, index) => 
-                            <ThemePicker
-                                key = {index}
-                                color = {(themes as any)[data].primary}
-                                active = {(themes as any)[data].primary === theme.primary}
-                                onPress = {() => setTheme(dispatch, (themes as any)[data])}
-                            />
-                        )}
-                    </View>
-                </Section.Row>
+                <Section.Column>
+                    <Text>Opções</Text>
+                </Section.Column>
+                <FlatList
+                    data = {homeOptions}
+                    contentContainerStyle = {{paddingHorizontal: LayoutStyles.marginHorizontal, paddingVertical: 12}}
+                    ItemSeparatorComponent = {() => <View style = {{width: 2, borderRadius: 2, marginHorizontal: 16, backgroundColor: theme.primary}}/>}                        
+                    horizontal = {true}
+                    showsHorizontalScrollIndicator = {false}
+                    keyExtractor = {(item, index) => index.toString()}
+                    renderItem = {({item}) => <OptionBox {...item} color = {theme.primary} />}
+                />
+                <Section.Column marginTop = {12} marginBottom = {8}>
+                    <Text>Cobranças</Text>
+                </Section.Column>
+                {SHOW_NO_DATA && <NoDebtors />}
+                {SHOW_DATA && charges.filter(data => !data.paid).map((item, index) => (
+                    <Section.Column key = {index} marginBottom = {charges.length === index+1 ? 0 : 10}>
+                        <ChargeBox key = {index} {...item} />
+                    </Section.Column>
+                ))}
             </ScreenRender>
-            <FAB
-                icon = "plus"
-                style = {{
-                    position: 'absolute',
-                    right: 24,
-                    bottom: 24,
-                    backgroundColor: theme.primary
-                }}
-                onPress = {() => sheetRef.current?.open()}
-            />
-            <Sheet sheetRef = {sheetRef} onClose = {() => dispatch(resetNewCharge())}>
+
+            <Sheet sheetRef = {chargeSheetRef} height = {200} onClose = {() => dispatch(resetNewCharge())}>
                 <FakeCurrencyInput
                     value = {newCharge.value}
                     minValue = {0}
@@ -102,6 +99,7 @@ const Home: React.FC = () => {
                             id: '', 
                             value: value ?? 0, 
                             formattedValue: formatNumber(value ?? 0, formatNumberProps), 
+                            paid: false,
                             date: {day: undefined, time: undefined}
                         }))
                     }
@@ -112,9 +110,22 @@ const Home: React.FC = () => {
                     disabled = {!newCharge.value}
                     onPress = {() => {
                         createCharge(dispatch)
-                        sheetRef.current?.close()
+                        chargeSheetRef.current?.close()
                     }}
                 >{`${newCharge.name ? `${newCharge.name} te deve` : 'Cobrar'} ${newCharge.formattedValue}`}</Button>
+            </Sheet>
+
+            <Sheet sheetRef = {themeSheetRef} height = {120}>
+                <View style = {{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginTop: 12}}>
+                    {Object.keys(themes).map((data, index) => 
+                        <ThemePicker
+                            key = {index}
+                            color = {(themes as any)[data].primary}
+                            active = {(themes as any)[data].primary === theme.primary}
+                            onPress = {() => setTheme(dispatch, (themes as any)[data])}
+                        />
+                    )}
+                </View>
             </Sheet>
         </>
 

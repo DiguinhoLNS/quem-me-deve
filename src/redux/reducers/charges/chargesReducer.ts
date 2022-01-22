@@ -15,6 +15,7 @@ const initialState: State = {
         name: undefined,
         value: 0,
         formattedValue: "0.00",
+        paid: false,
         date: {
             day: undefined,
             time: undefined
@@ -50,9 +51,13 @@ const chargeSlice = createSlice({
 
         deleteCharge: (state, action: PayloadAction<string>) => {
             state.charges = state.charges.filter(charge => charge.id !== action.payload)
+        },
+        checkCharge: (state, action: PayloadAction<string>) => {
+            const charge = state.charges.find(charge => charge.id === action.payload)
+            charge ? charge.paid = true : false
         }
     }
 })
 
-export const { setChargesData, setChargesLoading, createNewCharge, setNewCharges, resetNewCharge, deleteCharge } = chargeSlice.actions
+export const { setChargesData, setChargesLoading, createNewCharge, setNewCharges, resetNewCharge, deleteCharge, checkCharge } = chargeSlice.actions
 export default chargeSlice.reducer

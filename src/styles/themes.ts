@@ -9,7 +9,7 @@ const themes = {
     },
     blue: {
         name: 'Azul',
-        primary: '#83BCE4'
+        primary: '#0081BC'
     },
     yellow: {
         name: 'Amarelo',

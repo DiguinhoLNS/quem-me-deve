@@ -5,6 +5,7 @@ import { Avatar, Text } from 'react-native-paper'
 import * as S from './styles'
 
 import { useAppSelector } from '../../redux/hooks'
+import { Elevation } from '../../styles/base'
 
 const MainHeader: React.FC = props => {
 
@@ -12,16 +13,16 @@ const MainHeader: React.FC = props => {
 
     return(
 
-        <S.Header color = {theme.primary}>
-            <S.HeaderContent>
+        <S.Header style = {Elevation.elevation5} color = {theme.primary}>
+            <S.HeaderContainer>
                 <S.HeaderProfileContainer>
                     <TouchableOpacity>
                         <Avatar.Text label = "P" size = {40} style = {{backgroundColor: 'rgba(0,0,0,0.5)'}} />
                     </TouchableOpacity>
-                    <Text style = {{marginLeft: 8, fontSize: 18}}>Placeholder</Text>
+                    <Text style = {{marginLeft: 8, fontSize: 14}}>Usuário</Text>
                 </S.HeaderProfileContainer>
-                {props.children}
-            </S.HeaderContent>
+                <S.HeaderContent>{props.children}</S.HeaderContent>
+            </S.HeaderContainer>
         </S.Header>
 
     )

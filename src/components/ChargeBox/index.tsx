@@ -11,11 +11,14 @@ import { Charge } from '../../types/charge'
 import * as S from './styles'
 import { Elevation } from '../../styles/base'
 
-import removeCharge from '../../scripts/removeCharge'
+import removeCharge from '../../scripts/charge/removeCharge'
+import checkCharge from '../../scripts/charge/checkCharge'
 
 const ChargeBox: React.FC <Charge> = props => {
 
     const dispatch = useDispatch()
+
+    const [open, setOpen] = React.useState(false)
 
     const shareCharge = async () => {
         try {
@@ -28,15 +31,15 @@ const ChargeBox: React.FC <Charge> = props => {
     const handleLongPress = () => {
         Vibration.vibrate(100, false)
         console.log(props)
-        shareCharge()
+        setOpen(!open)
     }
 
     return(
 
         <S.ChargeBox style = {Elevation.elevation4}>
-            <Collapse handleLongPress = {handleLongPress}>
+            <Collapse isExpanded = {open} disabled = {true} handleLongPress = {handleLongPress}>
                 <CollapseHeader>
-                    <S.ChargeBoxHeaderContainer>
+                    <S.ChargeBoxHeaderContainer onPress = {() => open ? setOpen(false) : console.log('click')} onLongPress = {() => handleLongPress()}>
                         <Text style = {{fontSize: 32}}>{props.formattedValue}</Text>
                         <Text style = {{fontSize: 12}}>{props.name ? `${props.name} - ` : ''}{props.date.day} as {props.date.time?.substring(0,5)}</Text>
                     </S.ChargeBoxHeaderContainer>
@@ -52,6 +55,9 @@ const ChargeBox: React.FC <Charge> = props => {
                             </TouchableOpacity>
                             <TouchableOpacity onPress = {() => removeCharge(dispatch, props.id)}>
                                 <MaterialCommunityIcons name = "delete" size = {24} color = "red" />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress = {() => checkCharge(dispatch, props.id)}>
+                                <MaterialCommunityIcons name = "check" size = {24} color = "green" />
                             </TouchableOpacity>
                         </S.ChargeBoxOptionGroup>
                     </S.ChargeBoxBodyContainer>

@@ -14,18 +14,25 @@ export const Header = styled.View`
     background-color: ${props => props.color};
 `
 
-export const HeaderProfileContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 16px;
-`
-
-export const HeaderContent = styled.View`
+export const HeaderContainer = styled.View`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     padding: ${toPixel(LayoutStyles.marginHorizontal)};
     margin-top: ${toPixel(StatusBar.currentHeight)};
+`
+
+export const HeaderProfileContainer = styled.View`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 24px;
+`
+
+export const HeaderContent = styled.View`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
 `

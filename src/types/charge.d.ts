@@ -3,6 +3,7 @@ export type Charge = {
     name?: string
     value: number
     formattedValue: string
+    paid: boolean
     date: {
         day: string | undefined
         time: string | undefined
