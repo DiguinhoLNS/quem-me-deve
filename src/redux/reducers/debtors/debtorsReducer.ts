@@ -7,8 +7,8 @@ interface State {
 }
 
 const initialState: State = {
-    filterAll: false,
-    filterPaid: true,
+    filterAll: true,
+    filterPaid: false,
     filterUnpaid: false,
 }
 

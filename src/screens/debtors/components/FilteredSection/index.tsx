@@ -24,7 +24,8 @@ const FilteredSection: React.FC <FilteredSectionProps> = ({ filterName, dates, f
                 </Fragment>
             )) || (
                 <Section.Column center>
-                    <Text>{`Nenhum cobrança marcada como "${filterName}"`}</Text>
+                    <Text>Nenhum cobrança marcada como:</Text>
+                    <Text>{`"${filterName}"`}</Text>
                 </Section.Column>
             )}
         </>

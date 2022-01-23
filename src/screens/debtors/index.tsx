@@ -22,13 +22,14 @@ import NoDebtors from '../../components/NoDebtors'
 const Debtors: React.FC = () => {
 
     const dispatch = useDispatch()
+    const { theme } = useAppSelector(state => state.appTheme)
     const { charges, loadingCharges } = useAppSelector(state => state.charges)
     const { filterAll, filterPaid, filterUnpaid } = useAppSelector(state => state.debtors)
 
-    const [activeFilter, setActiveFilter] = useState<number>(1)
+    const [activeFilter, setActiveFilter] = useState<number>(0)
 
     const debtorsOption = [
-        {label: 'Todas', icon: 'currency-usd', color: '#2196f3', onPress: () => dispatch(setDebtorFilterAll()), onActive: setActiveFilter},
+        {label: 'Todas', icon: 'currency-usd', color: theme.primary, onPress: () => dispatch(setDebtorFilterAll()), onActive: setActiveFilter},
         {label: 'Pagas', icon: 'check', color: '#4caf50', onPress: () => dispatch(setDebtorFilterPaid()), onActive: setActiveFilter},
         {label: 'Não pagas', icon: 'close', color: '#f44336', onPress: () => dispatch(setDebtorFilterUnpaid()), onActive: setActiveFilter},
     ]
