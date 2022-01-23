@@ -18,11 +18,11 @@ import MainHeader from '../../components/MainHeader'
 import ThemePicker from '../../components/Theme/Picker'
 import setTheme from '../../scripts/app/theme/setTheme'
 import createCharge from '../../scripts/charge/createCharge'
-import OptionBox from './components/OptionBox'
 import Sheet from '../../components/Sheet'
 import NoDebtors from '../../components/NoDebtors'
 import formatNumberProps from '../../constants/formatNumberProps'
 import fixedCharges from '../../scripts/charge/fixedCharges'
+import OptionBox from '../../components/OptionBox'
 
 const Home: React.FC = () => {
 
@@ -48,8 +48,8 @@ const Home: React.FC = () => {
         <>
             <ScreenRender statusBarStyle = "dark-content" wrapperMarginTop = {false}>
                 <MainHeader>
-                    {SHOW_NO_DATA && <Text style = {{fontSize: 40}}>R$ 0,00</Text>}
-                    {SHOW_DATA && <Text style = {{fontSize: 40}}>{formatNumber(charges.filter(data => !data.paid).map(item => item.value).reduce((acc, value) => acc + value, 0), formatNumberProps)}</Text>}
+                    {SHOW_NO_DATA && <Text style = {{fontSize: 40, fontWeight: '700'}}>R$ 0,00</Text>}
+                    {SHOW_DATA && <Text style = {{fontSize: 40, fontWeight: '700'}}>{formatNumber(charges.filter(data => !data.paid).map(item => item.value).reduce((acc, value) => acc + value, 0), formatNumberProps)}</Text>}
                 </MainHeader>
                 {SHOW_LOADING && 
                     <Section.Row center>
@@ -63,10 +63,10 @@ const Home: React.FC = () => {
                     <FlatList
                         data = {homeOptions}
                         contentContainerStyle = {{paddingHorizontal: LayoutStyles.marginHorizontal, paddingVertical: 12}}
-                        ItemSeparatorComponent = {() => <View style = {{width: 2, borderRadius: 2, marginHorizontal: 16, backgroundColor: theme.primary}}/>}                        
                         horizontal = {true}
                         showsHorizontalScrollIndicator = {false}
                         keyExtractor = {(item, index) => index.toString()}
+                        ItemSeparatorComponent = {() => <View style = {{width: 2, borderRadius: 2, marginHorizontal: 16, backgroundColor: theme.primary}}/>}                        
                         renderItem = {({item}) => <OptionBox {...item} color = {theme.primary} />}
                     />
                 </>
@@ -135,7 +135,7 @@ const Home: React.FC = () => {
                                 key = {index}
                                 color = {(themes as any)[data].primary}
                                 active = {(themes as any)[data].primary === theme.primary}
-                                onPress = {() => setTheme(dispatch, (themes as any)[data])}
+                                onPress = {() => {setTheme(dispatch, (themes as any)[data]); themeSheetRef.current?.close()}}
                             />
                         )}
                     </View>

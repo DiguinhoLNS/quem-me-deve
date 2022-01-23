@@ -69,9 +69,11 @@ const ChargeBox: React.FC <ChargeBoxProps> = ({ data, showIcons }) => {
                             <TouchableOpacity onPress = {() => removeCharge(dispatch, data.id)}>
                                 <MaterialCommunityIcons name = "delete" size = {24} color = "red" />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress = {() => checkCharge(dispatch, data.id)}>
-                                <MaterialCommunityIcons name = "check" size = {24} color = "green" />
-                            </TouchableOpacity>
+                            {!data.paid && (
+                                <TouchableOpacity onPress = {() => checkCharge(dispatch, data.id)}>
+                                    <MaterialCommunityIcons name = "check" size = {24} color = "green" />
+                                </TouchableOpacity>
+                            )}
                         </S.ChargeBoxOptionGroup>
                     </S.ChargeBoxBodyContainer>
                 </CollapseBody>
