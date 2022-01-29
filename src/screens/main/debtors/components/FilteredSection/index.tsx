@@ -3,8 +3,8 @@ import { Text } from 'react-native-paper'
 
 import { FilteredSectionProps } from './types'
 
-import Section from '../../../../components/Section'
-import ChargeBox from '../../../../components/ChargeBox'
+import Section from '../../../../../components/Section'
+import ChargeBox from '../../../../../components/ChargeBox'
 
 const FilteredSection: React.FC <FilteredSectionProps> = ({ filterName, dates, filteredCharges }) => {
 
@@ -17,7 +17,7 @@ const FilteredSection: React.FC <FilteredSectionProps> = ({ filterName, dates, f
                         <Text>{date}</Text>
                     </Section.Column>
                     {filteredCharges.filter(filtered => filtered.date.day === date).map((item, itemIndex) => (
-                        <Section.Column key = {itemIndex} marginBottom = {filteredCharges.length === itemIndex+1 ? 24 : 12}>
+                        <Section.Column key = {itemIndex} marginBottom = {filteredCharges.length === itemIndex+1 ? 0 : 12}>
                             <ChargeBox data = {item} showIcons />
                         </Section.Column>
                     ))}

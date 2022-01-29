@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { Charge } from "../../../types/charge"
 
 interface State {
-    charges: Charge[] | []
+    charges: Charge[]
     newCharge: Charge
     loadingCharges: boolean
 }
@@ -37,13 +37,13 @@ const chargeSlice = createSlice({
             state.loadingCharges = true
         },
 
-        createNewCharge: (state, action: PayloadAction<Charge>) => {
+        setNewCharge: (state, action: PayloadAction<Charge>) => {
             state.newCharge = action.payload
         },
         resetNewCharge: (state) => {
             state.newCharge = initialState.newCharge
         },
-        setNewCharges: (state, action: PayloadAction<{id: string, day: string, time: string}>) => {
+        createNewCharge: (state, action: PayloadAction<{id: string, day: string, time: string}>) => {
             state.newCharge.id = action.payload.id
             state.newCharge.date.day = action.payload.day
             state.newCharge.date.time = action.payload.time
@@ -64,5 +64,9 @@ const chargeSlice = createSlice({
     }
 })
 
-export const { setChargesData, setChargesLoading, createNewCharge, setNewCharges, resetNewCharge, deleteCharge, checkCharge, fixCharge } = chargeSlice.actions
+export const { 
+    setChargesData, setChargesLoading, 
+    createNewCharge, setNewCharge, resetNewCharge, 
+    deleteCharge, checkCharge, fixCharge 
+} = chargeSlice.actions
 export default chargeSlice.reducer

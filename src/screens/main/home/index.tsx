@@ -4,27 +4,30 @@ import { ActivityIndicator, Button, Text } from 'react-native-paper'
 import { FakeCurrencyInput, formatNumber } from 'react-native-currency-input'
 import RBSheet from "react-native-raw-bottom-sheet"
 import { useDispatch } from 'react-redux'
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 
-import themes from '../../styles/themes'
-import { LayoutStyles } from '../../styles/layout'
+import { MainRouteParams } from '../../../routes/types'
 
-import { useAppSelector } from '../../redux/hooks'
-import { createNewCharge, resetNewCharge } from '../../redux/reducers/charges/chargesReducer'
+import themes from '../../../styles/themes'
+import { LayoutStyles } from '../../../styles/layout'
 
-import ScreenRender from '../../components/ScreenRender'
-import ChargeBox from '../../components/ChargeBox'
-import Section from '../../components/Section'
-import MainHeader from '../../components/MainHeader'
-import ThemePicker from '../../components/Theme/Picker'
-import setTheme from '../../scripts/app/theme/setTheme'
-import createCharge from '../../scripts/charge/createCharge'
-import Sheet from '../../components/Sheet'
-import NoDebtors from '../../components/NoDebtors'
-import formatNumberProps from '../../constants/formatNumberProps'
-import fixedCharges from '../../scripts/charge/fixedCharges'
-import OptionBox from '../../components/OptionBox'
+import { useAppSelector } from '../../../redux/hooks'
+import { resetNewCharge, setNewCharge } from '../../../redux/reducers/charges/chargesReducer'
 
-const Home: React.FC = () => {
+import ScreenRender from '../../../components/ScreenRender'
+import ChargeBox from '../../../components/ChargeBox'
+import Section from '../../../components/Section'
+import MainHeader from '../../../components/MainHeader'
+import ThemePicker from '../../../components/Theme/Picker'
+import setTheme from '../../../scripts/app/theme/setTheme'
+import createCharge from '../../../scripts/charge/createCharge'
+import Sheet from '../../../components/Sheet'
+import NoDebtors from '../../../components/NoDebtors'
+import formatNumberProps from '../../../constants/formatNumberProps'
+import fixedCharges from '../../../scripts/charge/fixedCharges'
+import OptionBox from '../../../components/OptionBox'
+
+const Home: React.FC <BottomTabScreenProps<MainRouteParams, 'home'>> = ({ navigation }) => {
 
     const dispatch = useDispatch()
     const { theme } = useAppSelector(state => state.appTheme)
@@ -34,9 +37,9 @@ const Home: React.FC = () => {
     const themeSheetRef = useRef<RBSheet>(null)
 
     const homeOptions = [
-        {label: 'Nova cobrança', icon: 'plus', onPress: () => chargeSheetRef.current?.open()},
+        {label: 'Cobrança Rápida', icon: 'flash', onPress: () => chargeSheetRef.current?.open()},
+        {label: 'Nova Cobrança', icon: 'cash-plus', onPress: () => {dispatch(resetNewCharge()); navigation.navigate('createChargeRoute')}},
         {label: 'Alterar tema', icon: 'palette', onPress: () => themeSheetRef.current?.open()},
-        {label: 'Compartilhar', icon: 'share-variant', onPress: () => console.log('Compartilhar')},
     ]
 
     const SHOW_LOADING = loadingCharges
@@ -60,15 +63,17 @@ const Home: React.FC = () => {
                     <Section.Column>
                         <Text>Opções</Text>
                     </Section.Column>
-                    <FlatList
-                        data = {homeOptions}
-                        contentContainerStyle = {{paddingHorizontal: LayoutStyles.marginHorizontal, paddingVertical: 12}}
-                        horizontal = {true}
-                        showsHorizontalScrollIndicator = {false}
-                        keyExtractor = {(item, index) => index.toString()}
-                        ItemSeparatorComponent = {() => <View style = {{width: 2, borderRadius: 2, marginHorizontal: 16, backgroundColor: theme.primary}}/>}                        
-                        renderItem = {({item}) => <OptionBox {...item} color = {theme.primary} />}
-                    />
+                    <View style = {{height: 84}}>
+                        <FlatList
+                            data = {homeOptions}
+                            contentContainerStyle = {{paddingHorizontal: LayoutStyles.marginHorizontal, paddingVertical: 12}}
+                            horizontal = {true}
+                            showsHorizontalScrollIndicator = {false}
+                            keyExtractor = {(item, index) => index.toString()}
+                            ItemSeparatorComponent = {() => <View style = {{width: 2, borderRadius: 2, marginHorizontal: 16, backgroundColor: theme.primary}}/>}                        
+                            renderItem = {({item}) => <OptionBox {...item} color = {theme.primary} />}
+                        />
+                    </View>
                 </>
                 <>
                     {(SHOW_DATA && fixedCharges(charges).length > 0) && (
@@ -102,30 +107,25 @@ const Home: React.FC = () => {
                         value = {newCharge.value}
                         minValue = {0}
                         style = {{fontSize: 50}}
-                        prefix = "R$"
-                        delimiter = ","
-                        separator = "."
-                        precision = {2}
+                        prefix = "R$ "
                         onChangeValue = {value => 
-                            dispatch(createNewCharge({
-                                id: '', 
+                            dispatch(setNewCharge({
+                                ...newCharge,
                                 value: value ?? 0, 
                                 formattedValue: formatNumber(value ?? 0, formatNumberProps), 
-                                paid: false,
-                                fix: false,
-                                date: {day: undefined, time: undefined}
                             }))
                         }
                     />
                     <Button 
                         mode = "contained" 
+                        uppercase = {false}
                         style = {{backgroundColor: theme.primary}}
                         disabled = {!newCharge.value}
                         onPress = {() => {
                             createCharge(dispatch)
                             chargeSheetRef.current?.close()
                         }}
-                    >{`${newCharge.name ? `${newCharge.name} te deve` : 'Cobrar'} ${newCharge.formattedValue}`}</Button>
+                    >{`Cobrar ${newCharge.formattedValue}`}</Button>
                 </Sheet>
 
                 <Sheet sheetRef = {themeSheetRef} height = {120}>

@@ -18,7 +18,8 @@ export const SectionRow = styled.View`
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: ${props => props.center ? 'center' : 'flex-start'};
+    align-items: ${props => props.center || props.between ? 'center' : 'flex-start'};
+    justify-content: ${props => props.center ? 'center' : props.between ? 'space-between' : 'flex-start'};
     width: 100%;
     padding: ${props => props.padding ?? `0px ${LayoutStyles.marginHorizontal}px`};
     margin-top: ${props => toPixel(props.marginTop) ?? '0px'};

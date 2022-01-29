@@ -1,7 +1,7 @@
 import React from 'react'
 
-import ScreenRender from '../../components/ScreenRender'
-import MainHeader from '../../components/MainHeader'
+import ScreenRender from '../../../components/ScreenRender'
+import MainHeader from '../../../components/MainHeader'
 
 const Profile: React.FC = () => {
 

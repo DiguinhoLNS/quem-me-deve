@@ -66,7 +66,7 @@ const ChargeBox: React.FC <ChargeBoxProps> = ({ data, showIcons }) => {
                             <TouchableOpacity onPress = {() => shareCharge()}>
                                 <MaterialCommunityIcons name = "share-variant" size = {24} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress = {() => removeCharge(dispatch, data.id)}>
+                            <TouchableOpacity onPress = {() => {removeCharge(dispatch, data.id); setOpen(false)}}>
                                 <MaterialCommunityIcons name = "delete" size = {24} color = "red" />
                             </TouchableOpacity>
                             {!data.paid && (

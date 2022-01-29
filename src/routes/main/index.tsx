@@ -4,9 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MainRouteParams } from '../../routes/types'
 
 import BottomTab from '../../components/BottomTab'
-import Home from '../../screens/home'
-import Debtors from '../../screens/debtors'
-import Profile from '../../screens/profile'
+import Home from '../../screens/main/home'
+import Debtors from '../../screens/main/debtors'
+import Profile from '../../screens/main/profile'
+import CreateChargeRoute from '../createCharge'
 
 const MainRoute: React.FC = () => {
 
@@ -20,8 +21,10 @@ const MainRoute: React.FC = () => {
             tabBar = {props => <BottomTab {...props} />}
         >
             <Tab.Screen name = "home" component = {Home} />
-            <Tab.Screen name = "debtors" component = {Debtors} />
+            <Tab.Screen name = "charges" component = {Debtors} />
             <Tab.Screen name = "profile" component = {Profile} />
+
+            <Tab.Screen name = "createChargeRoute" component = {CreateChargeRoute} />
         </Tab.Navigator>
 
     )

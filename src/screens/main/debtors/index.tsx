@@ -4,20 +4,20 @@ import { Text } from 'react-native-paper'
 import { formatNumber } from 'react-native-currency-input'
 import { useDispatch } from 'react-redux'
 
-import { LayoutStyles } from '../../styles/layout'
+import { LayoutStyles } from '../../../styles/layout'
 
-import { useAppSelector } from '../../redux/hooks'
-import { setDebtorFilterAll, setDebtorFilterPaid, setDebtorFilterUnpaid } from '../../redux/reducers/debtors/debtorsReducer'
+import { useAppSelector } from '../../../redux/hooks'
+import { setDebtorFilterAll, setDebtorFilterPaid, setDebtorFilterUnpaid } from '../../../redux/reducers/debtors/debtorsReducer'
 
-import ScreenRender from '../../components/ScreenRender'
-import MainHeader from '../../components/MainHeader'
-import formatNumberProps from '../../constants/formatNumberProps'
-import largestCharge from '../../scripts/charge/largestCharge'
-import Section from '../../components/Section'
-import ChargeBox from '../../components/ChargeBox'
-import Filter from '../../components/Filter'
+import ScreenRender from '../../../components/ScreenRender'
+import MainHeader from '../../../components/MainHeader'
+import formatNumberProps from '../../../constants/formatNumberProps'
+import largestCharge from '../../../scripts/charge/largestCharge'
+import Section from '../../../components/Section'
+import ChargeBox from '../../../components/ChargeBox'
+import Filter from '../../../components/Filter'
 import FilteredSection from './components/FilteredSection'
-import NoDebtors from '../../components/NoDebtors'
+import NoDebtors from '../../../components/NoDebtors'
 
 const Debtors: React.FC = () => {
 
@@ -62,15 +62,17 @@ const Debtors: React.FC = () => {
                 <Section.Column>
                     <Text>Filtros</Text>
                 </Section.Column>
-                <FlatList
-                    data = {debtorsOption}
-                    contentContainerStyle = {{paddingHorizontal: LayoutStyles.marginHorizontal, paddingTop: 12, paddingBottom: 24}}
-                    horizontal = {true}
-                    showsHorizontalScrollIndicator = {false}
-                    keyExtractor = {(item, index) => index.toString()}
-                    ItemSeparatorComponent = {() => <View style = {{width: 8}} />}
-                    renderItem = {({item, index}) => <Filter {...item} active = {activeFilter === index} index = {index} />}
-                />
+                <View style = {{height: 68}}>
+                    <FlatList
+                        data = {debtorsOption}
+                        contentContainerStyle = {{paddingHorizontal: LayoutStyles.marginHorizontal, paddingTop: 12, paddingBottom: 24}}
+                        horizontal = {true}
+                        showsHorizontalScrollIndicator = {false}
+                        keyExtractor = {(item, index) => index.toString()}
+                        ItemSeparatorComponent = {() => <View style = {{width: 8}} />}
+                        renderItem = {({item, index}) => <Filter {...item} active = {activeFilter === index} index = {index} />}
+                    />
+                </View>
                 {SHOW_NO_DATA && <NoDebtors />}
                 <>
                     {SHOW_DATA && filterAll && (

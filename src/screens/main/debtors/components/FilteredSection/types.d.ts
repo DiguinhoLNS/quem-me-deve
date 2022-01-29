@@ -1,4 +1,4 @@
-import { Charge } from "../../../../types/charge";
+import { Charge } from "../../../../../types/charge";
 
 export type FilteredSectionProps = {
     filterName: string

@@ -30,7 +30,13 @@ const ScreenRender: React.FC <ScreenRenderProps> = props => {
                     nestedScrollEnabled
                     keyboardShouldPersistTaps = "handled"
                 >
-                    <Wrapper type = {props.wrapperType ?? 'default'} marginTop = {props.wrapperMarginTop ?? true} translucent = {props.statusBarTranslucent}>{props.children}</Wrapper>
+                    <Wrapper 
+                        type = {props.wrapperType ?? 'default'} 
+                        center = {props.wrapperCenter} 
+                        between = {props.wrapperBetween}
+                        marginTop = {props.wrapperMarginTop ?? true} 
+                        translucent = {props.statusBarTranslucent}
+                    >{props.children}</Wrapper>
                 </KeyboardAwareScrollView>
             </SafeAreaView>
         </>
