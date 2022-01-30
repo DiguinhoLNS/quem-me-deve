@@ -87,6 +87,18 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>ProductSans-Black.ttf</string>
+		<string>ProductSans-BlackItalic.ttf</string>
+		<string>ProductSans-Bold.ttf</string>
+		<string>ProductSans-BoldItalic.ttf</string>
+		<string>ProductSans-Italic.ttf</string>
+		<string>ProductSans-Light.ttf</string>
+		<string>ProductSans-LightItalic.ttf</string>
+		<string>ProductSans-Medium.ttf</string>
+		<string>ProductSans-MediumItalic.ttf</string>
+		<string>ProductSans-Regular.ttf</string>
+		<string>ProductSans-Thin.ttf</string>
+		<string>ProductSans-ThinItalic.ttf</string>
 	</array>
 </dict>
 </plist>

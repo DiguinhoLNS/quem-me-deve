@@ -29,7 +29,7 @@ const CreateChargeValue: React.FC <StackScreenProps<CreateChargeRouteParams, 'va
         <>
             <ScreenRender statusBarStyle = "dark-content" wrapperBetween>
                 <View>
-                    <Section.Column marginTop = {24} marginBottom = {12} center>
+                    <Section.Column marginTop = {24} marginBottom = {12}>
                         <Text style = {{fontSize: 40}}>Qual o valor da <Text style = {{fontWeight: '700'}}>Cobrança</Text>?</Text>
                     </Section.Column>
                     <Section.Column>

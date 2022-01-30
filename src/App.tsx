@@ -14,10 +14,10 @@ const App: React.FC = () => {
 
     const fontConfig = {
         default: {
-            regular: {fontFamily: 'Montserrat-Regular'},
-            medium: {fontFamily: 'Montserrat-Medium'},
-            light: {fontFamily: 'Montserrat-Light'},
-            thin: {fontFamily: 'Montserrat-LightItalic'},
+            regular: {fontFamily: 'ProductSans-Regular'},
+            medium: {fontFamily: 'ProductSans-Medium'},
+            light: {fontFamily: 'ProductSans-Regular'},
+            thin: {fontFamily: 'ProductSans-LightItalic'},
         },
     }
 

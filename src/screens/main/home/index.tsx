@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { FlatList, View } from 'react-native'
 import { ActivityIndicator, Button, Text } from 'react-native-paper'
 import { FakeCurrencyInput, formatNumber } from 'react-native-currency-input'
@@ -13,6 +13,7 @@ import { LayoutStyles } from '../../../styles/layout'
 
 import { useAppSelector } from '../../../redux/hooks'
 import { resetNewCharge, setNewCharge } from '../../../redux/reducers/charges/chargesReducer'
+import { setFilteredContacts } from '../../../redux/reducers/createCharge/createChargeReducer'
 
 import ScreenRender from '../../../components/ScreenRender'
 import ChargeBox from '../../../components/ChargeBox'
@@ -22,10 +23,10 @@ import ThemePicker from '../../../components/Theme/Picker'
 import setTheme from '../../../scripts/app/theme/setTheme'
 import createCharge from '../../../scripts/charge/createCharge'
 import Sheet from '../../../components/Sheet'
-import NoDebtors from '../../../components/NoDebtors'
 import formatNumberProps from '../../../constants/formatNumberProps'
 import fixedCharges from '../../../scripts/charge/fixedCharges'
 import OptionBox from '../../../components/OptionBox'
+import NoData from '../../../components/NoData'
 
 const Home: React.FC <BottomTabScreenProps<MainRouteParams, 'home'>> = ({ navigation }) => {
 
@@ -38,7 +39,11 @@ const Home: React.FC <BottomTabScreenProps<MainRouteParams, 'home'>> = ({ naviga
 
     const homeOptions = [
         {label: 'Cobrança Rápida', icon: 'flash', onPress: () => chargeSheetRef.current?.open()},
-        {label: 'Nova Cobrança', icon: 'cash-plus', onPress: () => {dispatch(resetNewCharge()); navigation.navigate('createChargeRoute')}},
+        {label: 'Nova Cobrança', icon: 'cash-plus', onPress: () => {
+            dispatch(resetNewCharge())
+            dispatch(setFilteredContacts([]))
+            navigation.navigate('createChargeRoute')
+        }},
         {label: 'Alterar tema', icon: 'palette', onPress: () => themeSheetRef.current?.open()},
     ]
 
@@ -93,7 +98,7 @@ const Home: React.FC <BottomTabScreenProps<MainRouteParams, 'home'>> = ({ naviga
                     <Section.Column marginTop = {12} marginBottom = {8}>
                         <Text>Cobranças {SHOW_DATA && `(${charges.filter(data => !data.paid && !data.fix).length})`}</Text>
                     </Section.Column>
-                    {SHOW_NO_DATA && <NoDebtors />}
+                    {SHOW_NO_DATA && <NoData emoji = "cool" message = {['Olha que legal,', 'você não possui devedores!']} />}
                     {SHOW_DATA && charges.filter(data => !data.paid && !data.fix).map((item, index) => (
                         <Section.Column key = {index} marginBottom = {charges.filter(data => !data.paid).length === index+1 ? 0 : 12}>
                             <ChargeBox key = {index} data = {item} />

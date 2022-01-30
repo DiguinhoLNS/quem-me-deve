@@ -17,7 +17,7 @@ import Section from '../../../components/Section'
 import ChargeBox from '../../../components/ChargeBox'
 import Filter from '../../../components/Filter'
 import FilteredSection from './components/FilteredSection'
-import NoDebtors from '../../../components/NoDebtors'
+import NoData from '../../../components/NoData'
 
 const Debtors: React.FC = () => {
 
@@ -73,7 +73,7 @@ const Debtors: React.FC = () => {
                         renderItem = {({item, index}) => <Filter {...item} active = {activeFilter === index} index = {index} />}
                     />
                 </View>
-                {SHOW_NO_DATA && <NoDebtors />}
+                {SHOW_NO_DATA && <NoData emoji = "cool" message = {['Olha que legal,', 'você não possui devedores!']} />}
                 <>
                     {SHOW_DATA && filterAll && (
                         <FilteredSection

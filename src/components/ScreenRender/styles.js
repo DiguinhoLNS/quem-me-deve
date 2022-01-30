@@ -9,7 +9,7 @@ export const Wrapper = styled.View`
     flex-grow: 1;
     flex-direction: column;
     justify-content: ${props => props.center ? 'center' : props.between ? 'space-between' : 'flex-start'};
-    align-items: ${props => props.center ? 'center' : 'flex-start'};
+    align-items: ${props => props.center ? 'center' : 'stretch'};
     padding-bottom: ${props => props.center || props.between ? '0px' : '80px'};
     margin-top: ${props => ['default', 'form'].includes(props.type) && props.marginTop ? toPixel(StatusBar.currentHeight) : '0'};
     background-color: transparent;

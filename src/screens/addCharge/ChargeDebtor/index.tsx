@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react'
-import { Dimensions, View, PermissionsAndroid, Platform, TouchableOpacity  } from 'react-native'
+import React, { useState } from 'react'
+import { View, PermissionsAndroid, Platform } from 'react-native'
 import { IconButton, Text, TextInput } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import Contacts from 'react-native-contacts'
@@ -7,14 +7,14 @@ import Contacts from 'react-native-contacts'
 import { StackScreenProps } from '@react-navigation/stack'
 import { CreateChargeRouteParams } from '../../../routes/types'
 
-import { LayoutStyles } from '../../../styles/layout'
-
 import { useAppSelector } from '../../../redux/hooks'
 import { setNewCharge } from '../../../redux/reducers/charges/chargesReducer'
 import { setContacts, setFilteredContacts } from '../../../redux/reducers/createCharge/createChargeReducer'
 
 import ScreenRender from '../../../components/ScreenRender'
 import Section from '../../../components/Section'
+import ContactBox from './components/ContactBox'
+import NoData from '../../../components/NoData'
 
 const CreateChargeDebtor: React.FC <StackScreenProps<CreateChargeRouteParams, 'debtor'>> = ({ navigation }) => {
 
@@ -44,32 +44,62 @@ const CreateChargeDebtor: React.FC <StackScreenProps<CreateChargeRouteParams, 'd
     return(
 
         <>
-            <ScreenRender statusBarStyle = "dark-content" wrapperBetween>
+            <ScreenRender statusBarStyle = "dark-content" statusBarBackgroundColor = "rgba(255,255,255,0.9)" wrapperBetween>
                 <View>
-                    <Section.Column marginTop = {24} marginBottom = {12} center>
+                    <Section.Column marginTop = {24} marginBottom = {12}>
                         <Text style = {{fontSize: 40}}>Para quem vai a <Text style = {{fontWeight: '700'}}>Cobrança</Text>?</Text>
                     </Section.Column>
                     <Section.Column>
                         <TextInput
                             mode = "outlined"
-                            style = {{width: Dimensions.get('window').width - (2*LayoutStyles.marginHorizontal)}}
+                            placeholder = {searchContacts ? 'Pesquisar contatos' : 'Nome do devedor'}
+                            style = {{width: '100%', textDecorationLine: 'none'}}
+                            selectionColor = {theme.primary}
+                            activeOutlineColor = {theme.primary}
                             value = {newCharge.debtor}
                             onChangeText = {value => {
                                 dispatch(setNewCharge({...newCharge, debtor: value}))
                                 if(searchContacts && contacts) handleSearchContacts(value)
                             }}
-                            right = {<TextInput.Icon name = {searchContacts ? 'close' : 'account-search'} onPress = {async() => {setSearchContacts(!searchContacts);await getContacts()}} />}
+                            right = {
+                                <TextInput.Icon 
+                                    name = {searchContacts ? 'close' : 'account-search'} 
+                                    onPress = {async() => {
+                                        setSearchContacts(!searchContacts)
+                                        await getContacts()
+                                        if(!!newCharge.debtor && newCharge.debtor.length > 0) handleSearchContacts(newCharge.debtor)
+                                        else dispatch(setFilteredContacts([]))
+                                    }} 
+                                />
+                            }
                         />
                     </Section.Column>
-                    {searchContacts && (
-                        <Section.Column marginTop = {24}>
-                            <Text>Pequise um contato</Text>
-                            {filteredContacts.length > 0 && filteredContacts.map((name, index) => (
-                                <TouchableOpacity key = {index} onPress = {() => {dispatch(setNewCharge({...newCharge, debtor: name}));navigation.navigate('info')}}>
-                                    <Text>{name}</Text>
-                                </TouchableOpacity>
-                            ))}
+                    {!!newCharge.debtor && newCharge.debtor.length > 0 && (
+                        <Section.Column center>
+                            <Text>{`Você está cobrando ${newCharge.formattedValue} de ${newCharge.debtor}`}</Text>
                         </Section.Column>
+                    )}
+                    {searchContacts && (
+                        <>
+                            <Section.Column marginTop = {24} marginBottom = {24}>
+                                <Text>{newCharge.debtor && newCharge.debtor.length > 0 ? `${filteredContacts.length} Reultados de ${newCharge.debtor}` : 'Comece a pequisar um contato' }</Text>
+                                {filteredContacts.length > 0 && filteredContacts.map((name, index) => (
+                                    <ContactBox 
+                                        key = {index} 
+                                        name = {name} 
+                                        theme = {theme.primary} 
+                                        onSelect = {() => {
+                                            dispatch(setNewCharge({...newCharge, debtor: name}))
+                                            handleSearchContacts(name)
+                                            navigation.navigate('info')
+                                        }} 
+                                    />
+                                ))}
+                            </Section.Column>
+                            {filteredContacts.length === 0 && !!newCharge.debtor && newCharge.debtor.length !== 0 && (
+                                <NoData emoji = "sad" message = {['Nenhum contato encontrado']} />
+                            )}
+                        </>
                     )}
                 </View>
                 <Section.Row marginBottom = {24} between>
