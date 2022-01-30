@@ -1,6 +1,6 @@
 export type Charge = {
     id: string,
-    name?: string
+    debtor?: string
     value: number
     formattedValue: string
     paid: boolean

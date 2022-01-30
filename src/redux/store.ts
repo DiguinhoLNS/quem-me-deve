@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import appAuthReducer from './reducers/app/appAuthReducer'
 import appThemeReducer from './reducers/app/appThemeReducer'
 import chargesReducer from './reducers/charges/chargesReducer'
+import createChargeReducer from './reducers/createCharge/createChargeReducer'
 import debtorsReducer from './reducers/debtors/debtorsReducer'
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
         appTheme: appThemeReducer,
         charges: chargesReducer,
         debtors: debtorsReducer,
+        createCharge: createChargeReducer,
     }
 })
 

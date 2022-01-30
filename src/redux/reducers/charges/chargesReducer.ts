@@ -12,7 +12,7 @@ const initialState: State = {
     charges: [],
     newCharge: {
         id: '',
-        name: undefined,
+        debtor: undefined,
         value: 0,
         formattedValue: "0.00",
         paid: false,
