@@ -25,8 +25,9 @@ const ChargeBox: React.FC <ChargeBoxProps> = ({ data, showIcons }) => {
     const [open, setOpen] = React.useState(false)
 
     const shareCharge = async () => {
+        const message = `Olá ${data.debtor ?? ''}, você está devendo ${data.formattedValue}!`
         try {
-            await Share.share({message: `${data.name ?? 'Você'} deve ${data.formattedValue}`})
+            await Share.share({message})
         } catch (error) {
             console.log(error)
             Alert.alert('Erro', 'Não foi possível compartilhar')
@@ -47,7 +48,7 @@ const ChargeBox: React.FC <ChargeBoxProps> = ({ data, showIcons }) => {
                     <S.ChargeBoxHeaderContainer onPress = {() => open ? setOpen(false) : console.log('click')} onLongPress = {() => handleLongPress()}>
                         <S.ChargeBoxHeaderTextContainer>
                             <Text style = {{fontSize: 28}}>{data.formattedValue}</Text>
-                            <Text style = {{fontSize: 12}}>{data.name ? `${data.name} - ` : ''}{data.date.day} as {data.date.time?.substring(0,5)}</Text>
+                            <Text style = {{fontSize: 12}}>{data.debtor ? `${data.debtor} - ` : ''}{data.date.day} as {data.date.time?.substring(0,5)}</Text>
                         </S.ChargeBoxHeaderTextContainer>
                         {showIcons && (
                             <S.ChargeBoxHeaderIconContainer>

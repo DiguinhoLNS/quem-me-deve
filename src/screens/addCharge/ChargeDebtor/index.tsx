@@ -1,45 +1,48 @@
-import React, { useState } from 'react'
-import { View, PermissionsAndroid, Platform } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
 import { IconButton, Text, TextInput } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
-import Contacts from 'react-native-contacts'
 
 import { StackScreenProps } from '@react-navigation/stack'
 import { CreateChargeRouteParams } from '../../../routes/types'
 
 import { useAppSelector } from '../../../redux/hooks'
 import { setNewCharge } from '../../../redux/reducers/charges/chargesReducer'
-import { setContacts, setFilteredContacts } from '../../../redux/reducers/createCharge/createChargeReducer'
+import { setFilteredContacts } from '../../../redux/reducers/createCharge/createChargeReducer'
 
 import ScreenRender from '../../../components/ScreenRender'
 import Section from '../../../components/Section'
 import ContactBox from './components/ContactBox'
 import NoData from '../../../components/NoData'
+import getContacts from '../../../scripts/contacts/getContacts'
 
 const CreateChargeDebtor: React.FC <StackScreenProps<CreateChargeRouteParams, 'debtor'>> = ({ navigation }) => {
 
     const dispatch = useDispatch()
     const { theme } = useAppSelector(state => state.appTheme)
     const { newCharge } = useAppSelector(state => state.charges)
-    const { contacts, filteredContacts } = useAppSelector(state => state.createCharge)
+    const { filteredContacts } = useAppSelector(state => state.createCharge)
+    const { contacts } = useAppSelector(state => state.contacts)
 
     const [searchContacts, setSearchContacts] = useState<boolean>(false)
-
-    const getContacts = async () => {
-        if(Platform.OS === "android"){
-            PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
-                title: "Contacts",
-                message: "This app would like to view your contacts.",
-                buttonPositive: "OK",
-            }).then(async () => {
-                await Contacts.getAll().then(contacts => dispatch(setContacts(contacts.map(data => data.displayName))))
-            })
-        }
-    }
 
     const handleSearchContacts = (value: string) => {
         dispatch(setFilteredContacts(value.length > 0 ? contacts.filter(f => f.toLowerCase().includes(value.toLowerCase())).sort().slice(0, 10) : []))
     }
+
+    const getRandomColor = () => {
+        const letters = '0123456789ABCDEF'
+        let newColor = '#'
+        for(let i = 0; i < 6; i++){
+            newColor += letters[Math.floor(Math.random() * 16)]
+        }
+        return newColor
+    }
+
+    useEffect(() => {
+        //! Realocar para Home
+        (async() => {await getContacts(dispatch)})()
+    }, [])
 
     return(
 
@@ -65,17 +68,20 @@ const CreateChargeDebtor: React.FC <StackScreenProps<CreateChargeRouteParams, 'd
                                 <TextInput.Icon 
                                     name = {searchContacts ? 'close' : 'account-search'} 
                                     onPress = {async() => {
-                                        setSearchContacts(!searchContacts)
-                                        await getContacts()
-                                        if(!!newCharge.debtor && newCharge.debtor.length > 0) handleSearchContacts(newCharge.debtor)
-                                        else dispatch(setFilteredContacts([]))
+                                        const willSearch = searchContacts
+                                        setSearchContacts(!willSearch)
+
+                                        if(!willSearch){
+                                            if(!!newCharge.debtor && newCharge.debtor.length > 0) handleSearchContacts(newCharge.debtor)
+                                            else dispatch(setFilteredContacts([]))
+                                        } 
                                     }} 
                                 />
                             }
                         />
                     </Section.Column>
                     {!!newCharge.debtor && newCharge.debtor.length > 0 && (
-                        <Section.Column center>
+                        <Section.Column marginTop = {8} center>
                             <Text>{`Você está cobrando ${newCharge.formattedValue} de ${newCharge.debtor}`}</Text>
                         </Section.Column>
                     )}
@@ -87,7 +93,7 @@ const CreateChargeDebtor: React.FC <StackScreenProps<CreateChargeRouteParams, 'd
                                     <ContactBox 
                                         key = {index} 
                                         name = {name} 
-                                        theme = {theme.primary} 
+                                        theme = {getRandomColor()} 
                                         onSelect = {() => {
                                             dispatch(setNewCharge({...newCharge, debtor: name}))
                                             handleSearchContacts(name)
@@ -111,6 +117,7 @@ const CreateChargeDebtor: React.FC <StackScreenProps<CreateChargeRouteParams, 'd
                         icon = 'arrow-right'
                         size = {32}
                         color = 'green'
+                        disabled = {!newCharge.debtor || newCharge.debtor.length === 0}
                         onPress = {() => navigation.navigate('info')}
                     />
                 </Section.Row>

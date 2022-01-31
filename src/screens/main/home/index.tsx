@@ -96,7 +96,7 @@ const Home: React.FC <BottomTabScreenProps<MainRouteParams, 'home'>> = ({ naviga
                 </>
                 <>
                     <Section.Column marginTop = {12} marginBottom = {8}>
-                        <Text>Cobranças {SHOW_DATA && `(${charges.filter(data => !data.paid && !data.fix).length})`}</Text>
+                        <Text>{SHOW_DATA && `Você tem ${charges.filter(data => !data.paid && !data.fix).length} cobranças` || 'Cobranças'}</Text>
                     </Section.Column>
                     {SHOW_NO_DATA && <NoData emoji = "cool" message = {['Olha que legal,', 'você não possui devedores!']} />}
                     {SHOW_DATA && charges.filter(data => !data.paid && !data.fix).map((item, index) => (

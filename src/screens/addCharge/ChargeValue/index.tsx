@@ -27,7 +27,7 @@ const CreateChargeValue: React.FC <StackScreenProps<CreateChargeRouteParams, 'va
     return(
 
         <>
-            <ScreenRender statusBarStyle = "dark-content" wrapperBetween>
+            <ScreenRender statusBarStyle = "dark-content" statusBarBackgroundColor = "rgba(255,255,255,0.9)" wrapperBetween>
                 <View>
                     <Section.Column marginTop = {24} marginBottom = {12}>
                         <Text style = {{fontSize: 40}}>Qual o valor da <Text style = {{fontWeight: '700'}}>Cobrança</Text>?</Text>
