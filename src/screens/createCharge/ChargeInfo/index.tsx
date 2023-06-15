@@ -21,7 +21,7 @@ const CreateChargeInfo: React.FC <StackScreenProps<any>> = ({ navigation }) => {
         <>
             <ScreenRender statusBarStyle = "dark-content" statusBarBackgroundColor = "rgba(255,255,255,0.9)" wrapperBetween>
                 <View>
-                    <Section.Column marginTop = {24} marginBottom = {24}>
+                    <Section.Column marginTop = {24} marginBottom = {12}>
                         <Text style = {{fontSize: 32}}>Você está cobrando,</Text>
                         <Text style = {{fontSize: 32}}>
                             <Text style = {{fontWeight: '700'}}>{newCharge.formattedValue}</Text>

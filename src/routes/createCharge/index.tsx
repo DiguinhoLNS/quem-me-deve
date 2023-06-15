@@ -3,9 +3,9 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 
 import { CreateChargeRouteParams } from '../types'
 
-import CreateChargeValue from '../../screens/addCharge/ChargeValue'
-import CreateChargeDebtor from '../../screens/addCharge/ChargeDebtor'
-import CreateChargeInfo from '../../screens/addCharge/ChargeInfo'
+import CreateChargeValue from '../../screens/createCharge/ChargeValue'
+import CreateChargeDebtor from '../../screens/createCharge/ChargeDebtor'
+import CreateChargeInfo from '../../screens/createCharge/ChargeInfo'
 
 const CreateChargeRoute: React.FC = () => {
 

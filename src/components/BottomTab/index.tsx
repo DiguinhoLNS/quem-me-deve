@@ -25,8 +25,8 @@ const BottomTab: React.FC <BottomTabProps> = ({ state, navigation }) => {
             {[0, 1, 2].includes(state.index) && (
                 <S.BottomTabWrapper>
                     <S.BottomTabContainer style = {Elevation.elevation5}>
-                        <Item icon = "home" route = "home" active = {state.index === 0} />
                         <Item icon = "wallet" route = "charges" active = {state.index === 1} />
+                        <Item icon = "home" route = "home" active = {state.index === 0} />
                         <Item icon = "account" route = "profile" active = {state.index === 2} />
                     </S.BottomTabContainer>
                 </S.BottomTabWrapper>

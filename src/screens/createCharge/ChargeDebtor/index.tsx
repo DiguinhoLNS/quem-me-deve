@@ -56,7 +56,7 @@ const CreateChargeDebtor: React.FC <StackScreenProps<CreateChargeRouteParams, 'd
                         <TextInput
                             mode = "outlined"
                             placeholder = {searchContacts ? 'Pesquisar contatos' : 'Nome do devedor'}
-                            style = {{width: '100%', textDecorationLine: 'none'}}
+                            style = {{width: '100%'}}
                             selectionColor = {theme.primary}
                             activeOutlineColor = {theme.primary}
                             value = {newCharge.debtor}
